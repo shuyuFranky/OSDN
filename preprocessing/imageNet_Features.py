@@ -99,14 +99,14 @@ def obtainImgList(imgFileDir):
     train_images = glob.glob(path.join(imgFileDir, 'train/*/*.JPEG'))
 
     return train_images
-    
+
 def extractFeatures(args):
     """ Loop through files, extract caffe features, and save them to file
     """
 
 
     # Load numpy array (.npy), directory glob (*.jpg), or image file.
-        
+
     imglist = obtainImgList('imglist.txt')
     imagelist_args = [int(s) for s in args.imagelist_args.split(',')]
     pool = mp.Pool(processes=NPROCESSORS)
@@ -148,7 +148,7 @@ def compute_features(imgname, args):
         os.makedirs(path.dirname(outfname))
 
     inputs = [caffe.io.load_image(imgname)]
-    
+
     if args.force_grayscale:
         inputs = [rgb2gray(input) for input in inputs];
 
@@ -274,9 +274,9 @@ def main(argv):
         help="images in imglist to consider for feature computation"
     )
 
-    
+
     args = parser.parse_args()
-    
+
     if args.run_quick_test:
         runClassifierTest(args)
 

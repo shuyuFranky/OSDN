@@ -70,10 +70,10 @@ except ImportError:
 NCHANNELS = 10
 
 #---------------------------------------------------------------------------------
-def weibull_tailfitting(meanfiles_path, distancefiles_path, labellist, 
-                        tailsize = 20, 
+def weibull_tailfitting(meanfiles_path, distancefiles_path, labellist,
+                        tailsize = 20,
                         distance_type = 'eucos'):
-                        
+
     """ Read through distance files, mean vector and fit weibull model for each category
 
     Input:
@@ -85,9 +85,9 @@ def weibull_tailfitting(meanfiles_path, distancefiles_path, labellist,
     Output:
     --------------------------------
     weibull_model : Perform EVT based analysis using tails of distances and save
-                    weibull model parameters for re-adjusting softmax scores    
+                    weibull model parameters for re-adjusting softmax scores
     """
-    
+
     weibull_model = {}
     # for each category, read meanfile, distance file, and perform weibull fitting
     for category in labellist:
@@ -110,11 +110,11 @@ def weibull_tailfitting(meanfiles_path, distancefiles_path, labellist,
 def query_weibull(category_name, weibull_model, distance_type = 'eucos'):
     """ Query through dictionary for Weibull model.
     Return in the order: [mean_vec, distances, weibull_model]
-    
+
     Input:
     ------------------------------
     category_name : name of ImageNet category in WNET format. E.g. n01440764
-    weibull_model: dictonary of weibull models for 
+    weibull_model: dictonary of weibull models for
     """
 
     category_weibull = []
@@ -122,5 +122,5 @@ def query_weibull(category_name, weibull_model, distance_type = 'eucos'):
     category_weibull += [weibull_model[category_name]['distances_%s' %distance_type]]
     category_weibull += [weibull_model[category_name]['weibull_model']]
 
-    return category_weibull    
+    return category_weibull
 

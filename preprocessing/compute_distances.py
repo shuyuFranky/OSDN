@@ -64,7 +64,7 @@ def getlabellist(fname):
     """
 
     imagenetlabels = open(fname, 'r').readlines()
-    labellist  = [i.split(' ')[0] for i in imagenetlabels]        
+    labellist  = [i.split(' ')[0] for i in imagenetlabels]
     return labellist
 
 #------------------------------------------------------------------------------------------
@@ -72,14 +72,14 @@ def compute_channel_distances(mean_train_channel_vector, features, category_name
     """
     Input:
     ---------
-    mean_train_channel_vector : mean activation vector for a given class. 
+    mean_train_channel_vector : mean activation vector for a given class.
                                 It can be computed using MAV_Compute.py file
     features: features for the category under consideration
     category_name: synset_id
 
     Output:
     ---------
-    channel_distances: dict of distance distribution from MAV for each channel. 
+    channel_distances: dict of distance distribution from MAV for each channel.
     distances considered are eucos, cosine and euclidean
     """
 
@@ -111,9 +111,9 @@ def compute_channel_distances(mean_train_channel_vector, features, category_name
 
     channel_distances = {'eucos': eucos_dist, 'cosine': cos_dist, 'euclidean':eu_dist}
     return channel_distances
-    
+
 #------------------------------------------------------------------------------------------
-def compute_distances(mav_fname, labellist, category_name, 
+def compute_distances(mav_fname, labellist, category_name,
                       featurefilepath, layer = 'fc8'):
     """
     Input:
@@ -123,8 +123,8 @@ def compute_distances(mav_fname, labellist, category_name,
     category_name : synset_id
 
     """
-    
-    
+
+
     mean_feature_vec = loadmat(mav_fname)[category_name]
     print '%s/%s/*.mat' %(featurefilepath, category_name)
     featurefile_list = glob.glob('%s/*.mat' %featurefilepath)

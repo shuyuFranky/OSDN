@@ -66,13 +66,13 @@ featurefilepath = '../data/train_features/'
 def getlabellist(fname):
 
     imagenetlabels = open(fname, 'r').readlines()
-    labellist  = [i.split(' ')[0] for i in imagenetlabels]        
+    labellist  = [i.split(' ')[0] for i in imagenetlabels]
     return labellist
 
 def compute_mean_vector(category_name, labellist, layer = 'fc8'):
     print category_name
     featurefile_list = glob.glob('%s/%s/*.mat' %(featurefilepath, category_name))
-    
+
     # gather all the training samples for which predicted category
     # was the category under consideration
     correct_features = []
@@ -84,7 +84,7 @@ def compute_mean_vector(category_name, labellist, layer = 'fc8'):
                 correct_features += [img_arr[layer]]
         except TypeError:
             continue
-    
+
     # Now compute channel wise mean vector
     channel_mean_vec = []
     for channelid in range(correct_features[0].shape[0]):
@@ -114,8 +114,8 @@ def main():
         labellist = getlabellist('../synset_words_caffe_ILSVRC12.txt')
         mean_vector_dict = {}
         compute_mean_vector(category_name, labellist)
-        print "Total time %s secs" %(time.time() - st)    
- 
+        print "Total time %s secs" %(time.time() - st)
+
 
 if __name__ == "__main__":
     main()

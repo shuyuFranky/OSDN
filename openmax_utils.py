@@ -72,10 +72,10 @@ def parse_synsetfile(synsetfname):
     return imageNetIDs
 
 def getlabellist(synsetfname):
-    """ read sysnset file as python list. Index corresponds to the output that 
+    """ read sysnset file as python list. Index corresponds to the output that
     caffe provides
     """
-    
+
     categorylist = open(synsetfname, 'r').readlines()
     labellist = [category.split(' ')[0] for category in categorylist]
     return labellist
@@ -87,8 +87,8 @@ def compute_distance(query_channel, channel, mean_vec, distance_type = 'eucos'):
     of distance of each channel (from query image) with respective channel of
     Mean Activation Vector. In the paper, we considered a hybrid distance eucos which
     combines euclidean and cosine distance for bouding open space. Alternatively,
-    other distances such as euclidean or cosine can also be used. 
-    
+    other distances such as euclidean or cosine can also be used.
+
     Input:
     --------
     query_channel: Particular FC8 channel of query image
@@ -110,4 +110,3 @@ def compute_distance(query_channel, channel, mean_vec, distance_type = 'eucos'):
     else:
         print "distance type not known: enter either of eucos, euclidean or cosine"
     return query_distance
-    

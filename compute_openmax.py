@@ -78,7 +78,7 @@ WEIBULL_TAIL_SIZE = 20
 #---------------------------------------------------------------------------------
 def computeOpenMaxProbability(openmax_fc8, openmax_score_u):
     """ Convert the scores in probability value using openmax
-    
+
     Input:
     ---------------
     openmax_fc8 : modified FC8 layer from Weibull based computation
@@ -88,18 +88,18 @@ def computeOpenMaxProbability(openmax_fc8, openmax_score_u):
     ---------------
     modified_scores : probability values modified using OpenMax framework,
     by incorporating degree of uncertainity/openness for a given class
-    
+
     """
     prob_scores, prob_unknowns = [], []
     for channel in range(NCHANNELS):
         channel_scores, channel_unknowns = [], []
         for category in range(NCLASSES):
             channel_scores += [sp.exp(openmax_fc8[channel, category])]
-                    
+
         total_denominator = sp.sum(sp.exp(openmax_fc8[channel, :])) + sp.exp(sp.sum(openmax_score_u[channel, :]))
         prob_scores += [channel_scores/total_denominator ]
         prob_unknowns += [sp.exp(sp.sum(openmax_score_u[channel, :]))/total_denominator]
-        
+
     prob_scores = sp.asarray(prob_scores)
     prob_unknowns = sp.asarray(prob_unknowns)
 
@@ -112,7 +112,7 @@ def computeOpenMaxProbability(openmax_fc8, openmax_score_u):
 #---------------------------------------------------------------------------------
 def recalibrate_scores(weibull_model, labellist, imgarr,
                        layer = 'fc8', alpharank = 10, distance_type = 'eucos'):
-    """ 
+    """
     Given FC8 features for an image, list of weibull models for each class,
     re-calibrate scores
 
@@ -121,16 +121,16 @@ def recalibrate_scores(weibull_model, labellist, imgarr,
     weibull_model : pre-computed weibull_model obtained from weibull_tailfitting() function
     labellist : ImageNet 2012 labellist
     imgarr : features for a particular image extracted using caffe architecture
-    
+
     Output:
     ---------------
     openmax_probab: Probability values for a given class computed using OpenMax
     softmax_probab: Probability values for a given class computed using SoftMax (these
-    were precomputed from caffe architecture. Function returns them for the sake 
+    were precomputed from caffe architecture. Function returns them for the sake
     of convienence)
 
     """
-    
+
     imglayer = imgarr[layer]
     ranked_list = imgarr['scores'].argsort().ravel()[::-1]
     alpha_weights = [((alpharank+1) - i)/float(alpharank) for i in range(1, alpharank+1)]
@@ -165,10 +165,10 @@ def recalibrate_scores(weibull_model, labellist, imgarr,
         openmax_score_u += [openmax_fc8_unknown]
     openmax_fc8 = sp.asarray(openmax_fc8)
     openmax_score_u = sp.asarray(openmax_score_u)
-    
-    # Pass the recalibrated fc8 scores for the image into openmax    
+
+    # Pass the recalibrated fc8 scores for the image into openmax
     openmax_probab = computeOpenMaxProbability(openmax_fc8, openmax_score_u)
-    softmax_probab = imgarr['scores'].ravel() 
+    softmax_probab = imgarr['scores'].ravel()
     return sp.asarray(openmax_probab), sp.asarray(softmax_probab)
 
 #---------------------------------------------------------------------------------
@@ -184,7 +184,7 @@ def main():
         default=WEIBULL_TAIL_SIZE,
         help="Tail size used for weibull fitting"
     )
-    
+
     parser.add_argument(
         "--alpha_rank",
         type=int,
@@ -203,26 +203,26 @@ def main():
     parser.add_argument(
         "--mean_files_path",
         default='data/mean_files/',
-        help="Path to directory where mean activation vector (MAV) is saved."        
+        help="Path to directory where mean activation vector (MAV) is saved."
     )
 
     parser.add_argument(
         "--synsetfname",
         default='synset_words_caffe_ILSVRC12.txt',
-        help="Path to Synset filename from caffe website"        
+        help="Path to Synset filename from caffe website"
     )
 
     parser.add_argument(
         "--image_arrname",
         default='data/train_features/n01440764/n01440764_14280.JPEG.mat',
-        help="Image Array name for which openmax scores are to be computed"        
+        help="Image Array name for which openmax scores are to be computed"
     )
 
     parser.add_argument(
         "--distance_path",
         default='data/mean_distance_files/',
         help="Path to directory where distances of training data \
-        from Mean Activation Vector is saved"        
+        from Mean Activation Vector is saved"
     )
 
     args = parser.parse_args()
